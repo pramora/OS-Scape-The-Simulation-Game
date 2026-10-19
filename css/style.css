@@ -1,0 +1,88 @@
+  :root {
+    --void: #05060f;
+    --nebula: #1d1245;
+    --beam: #5ce1ff;
+    --suit: #ff8a3d;
+    --ink: #eef3ff;
+    --dim: #9aa6c7;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% 30%, var(--nebula) 0%, var(--void) 70%);
+    color: var(--ink);
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    overflow: hidden;
+  }
+  #stars { position: fixed; inset: 0; width: 100%; height: 100%; }
+
+  .screen { position: fixed; inset: 0; display: none; }
+  .screen.active { display: block; }
+
+  /* ---------- Title screen ---------- */
+  .ship { position: absolute; top: -4vh; left: 50%; width: min(70vw, 420px); transform: translateX(-50%); opacity: .75; }
+  .beam {
+    position: absolute; top: 9vh; left: 50%; width: min(34vw, 200px); height: 44vh;
+    transform: translateX(-50%); opacity: 0;
+    background: linear-gradient(to bottom, rgba(92,225,255,.75), rgba(92,225,255,.05));
+    clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+    transition: opacity .8s ease;
+  }
+  .astro {
+    position: absolute; top: 44vh; left: 50%; width: clamp(90px, 22vw, 140px);
+    margin-left: calc(clamp(90px, 22vw, 140px) / -2);
+    animation: drift 6s ease-in-out infinite;
+  }
+  .astro svg { display: block; width: 100%; height: auto; }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(-6deg); }
+    50% { transform: translateY(-14px) rotate(5deg); }
+  }
+  .abducting .beam { opacity: 1; }
+  .abducting .astro {
+    animation: none;
+    transition: transform 2.2s cubic-bezier(.5, 0, .7, 1), opacity 2.2s ease;
+    transform: translateY(-34vh) scale(.25) rotate(0deg);
+    opacity: .2;
+  }
+  .abducting .menu { opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+
+  .menu { position: absolute; left: 0; right: 0; bottom: 7vh; text-align: center; padding: 0 20px; }
+  h1 {
+    font-size: clamp(40px, 11vw, 84px); letter-spacing: .04em; font-weight: 800;
+    text-shadow: 0 0 24px rgba(92,225,255,.45);
+  }
+  .tagline { color: var(--dim); margin: 6px 0 24px; font-size: clamp(14px, 3.6vw, 17px); }
+
+  button {
+    font: inherit; cursor: pointer; border-radius: 999px; padding: 12px 34px;
+    border: 2px solid var(--beam); background: transparent; color: var(--ink);
+    font-weight: 700; letter-spacing: .12em; transition: background .2s, color .2s, transform .1s;
+  }
+  button:hover { background: var(--beam); color: var(--void); }
+  button:active { transform: scale(.97); }
+  button:focus-visible { outline: 3px solid var(--suit); outline-offset: 4px; }
+  button.ghost { border-color: transparent; color: var(--dim); font-weight: 400; letter-spacing: .02em; }
+  button.ghost:hover { background: transparent; color: var(--ink); }
+
+  /* ---------- Story screen ---------- */
+  #story { align-items: center; justify-content: center; flex-direction: column; padding: 28px; text-align: center; }
+  #story.active { display: flex; }
+  #line {
+    max-width: 34ch; font-size: clamp(20px, 5vw, 30px); line-height: 1.5; min-height: 6.5em;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadein .9s ease;
+  }
+  #line em { color: var(--beam); font-style: normal; }
+  #hint { color: var(--dim); font-size: 14px; min-height: 1.4em; margin-top: 8px; }
+  .nav { display: flex; gap: 14px; margin-top: 28px; align-items: center; }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+  #flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+  #flash.on { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .astro { animation: none; }
+    .abducting .astro { transition-duration: .01s; }
+    #line { animation: none; }
+  }
